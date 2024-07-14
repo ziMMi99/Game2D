@@ -50,19 +50,38 @@ public class Player extends Entity {
     }
 
     //Make player specific update and draw methods, to save alot of code in the GamePanel's update and draw method. Now only a method call is needed, and it makes the code more readable
+    //This methods gets called 60 times per second
     public void update() {
-        if (keyHandler.upPressed) {
-            direction = "up";
-            entityYPos = entityYPos - entitySpeed;
-        } else if (keyHandler.downPressed) {
-            direction = "down";
-            entityYPos = entityYPos + entitySpeed;
-        } else if (keyHandler.leftPressed) {
-            direction = "left";
-            entityXPos = entityXPos - entitySpeed;
-        } else if (keyHandler.rightPressed) {
-            direction = "right";
-            entityXPos = entityXPos + entitySpeed;
+
+        //If true
+        if (keyHandler.upPressed || keyHandler.downPressed ||
+                keyHandler.leftPressed || keyHandler.rightPressed) {
+            if (keyHandler.upPressed) {
+                direction = "up";
+                entityYPos = entityYPos - entitySpeed;
+            } else if (keyHandler.downPressed) {
+                direction = "down";
+                entityYPos = entityYPos + entitySpeed;
+            } else if (keyHandler.leftPressed) {
+                direction = "left";
+                entityXPos = entityXPos - entitySpeed;
+            } else if (keyHandler.rightPressed) {
+                direction = "right";
+                entityXPos = entityXPos + entitySpeed;
+            }
+
+            //Update the sprite counter 60 times per second
+            spriteCounter++;
+            //When sprite counter reaches over 15, it will switch the sprite image to the other walking sprite, simulating walking
+            if (spriteCounter > 15) {
+                if (spriteNum == 1) {
+                    spriteNum = 2;
+                } else if (spriteNum == 2) {
+                    spriteNum = 1;
+                }
+                //Reset sprite counter when switching sprite number
+                spriteCounter = 0;
+            }
         }
     }
 
@@ -72,16 +91,36 @@ public class Player extends Entity {
 
         switch (direction) {
             case "up":
-                image = up1;
+                if (spriteNum == 1) {
+                    image = up1;
+                }
+                if (spriteNum == 2) {
+                    image = up2;
+                }
                 break;
             case "down":
-                image = down1;
+                if (spriteNum == 1) {
+                    image = down1;
+                }
+                if (spriteNum == 2) {
+                    image = down2;
+                }
                 break;
             case "left":
-                image = left1;
+                if (spriteNum == 1) {
+                    image = left1;
+                }
+                if (spriteNum == 2) {
+                    image = left2;
+                }
                 break;
             case "right":
-                image = right1;
+                if (spriteNum == 1) {
+                    image = right1;
+                }
+                if (spriteNum == 2) {
+                    image = right2;
+                }
                 break;
 
         }
