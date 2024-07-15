@@ -1,6 +1,7 @@
 package org.zimmi.main;
 
 import org.zimmi.entity.Player;
+import org.zimmi.tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,19 +15,15 @@ public class GamePanel extends JPanel implements Runnable {
     public final int tileSize = originalTileSize * scale; // 48x48 tile
 
     //The game is tile-based, so by setting a max col- and row-tile size, you can multiply by the tile size to set the screen size
-    final int maxScreenCol = 16;
-    final int maxScreenRow = 12;
-    final int screenWidth = tileSize * maxScreenCol; // 768 pixel
-    final int screenHeight = tileSize * maxScreenRow; // 576 pixel
+    public final int maxScreenCol = 16;
+    public final int maxScreenRow = 12;
+    public final int screenWidth = tileSize * maxScreenCol; // 768 pixel
+    public final int screenHeight = tileSize * maxScreenRow; // 576 pixel
 
     // FPS
     int FPS = 60;
 
-    //Player default position
-    int playerXPos = 100;
-    int playerYPos = 100;
-    int playerSpeed = 4;
-
+    TileManager tileManager = new TileManager(this);
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this, keyHandler);
@@ -97,6 +94,8 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
 
         Graphics2D g2D = (Graphics2D) g;
+
+        tileManager.draw(g2D);
 
         player.draw(g2D);
 
